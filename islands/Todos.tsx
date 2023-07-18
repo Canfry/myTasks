@@ -60,7 +60,10 @@ export default function Todos() {
         : (
           <div className="mt-10 text-center">
             <div>
-              <img src="/completed.svg" alt="Completed illustration" />
+              <img
+                src="/completed.svg"
+                alt="Completed illustration"
+              />
               <h2 className="text-2xl font-bold mb-5">
                 All tasks are completed!!
               </h2>
