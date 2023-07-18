@@ -1,15 +1,16 @@
 import { useRef, useState } from "preact/hooks";
-import { Todo } from "../interfaces/Todo.ts";
+import { ITodo } from "../interfaces/ITodo.ts";
+import { Todo } from "../components/Todo.tsx";
 
 export default function Todos() {
   const [counter, setCounter] = useState<number>(0);
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<ITodo[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const addTodo = (event: Event) => {
     event.preventDefault();
     if (inputRef.current?.value) {
-      const newTodo: Todo = {
+      const newTodo: ITodo = {
         id: counter,
         title: inputRef.current.value,
       };
@@ -22,10 +23,10 @@ export default function Todos() {
   };
 
   const removeTodo = (id: number) => {
-    setTodos((prevState) => prevState.filter((t) => t.id === id));
+    setTodos((prevState) => prevState.filter((t) => t.id !== id));
   };
 
-  const editTodo = (todo: Todo) => {
+  const editTodo = (todo: ITodo) => {
     setTodos((prevState) =>
       prevState.map((t) => {
         if (t.id === todo.id) {
@@ -54,7 +55,9 @@ export default function Todos() {
       {todos.length > 0
         ? (
           <div className="mt-10">
-            {todos.map((todo) => <p>{todo.title}</p>)}
+            {todos.map((todo) => (
+              <Todo todo={todo} onDelete={removeTodo} onEdit={editTodo} />
+            ))}
           </div>
         )
         : (
@@ -67,7 +70,7 @@ export default function Todos() {
               <h2 className="text-2xl font-bold mb-5">
                 All tasks are completed!!
               </h2>
-              <p>Go have fun outside!</p>
+              <p>Good job, you can rest!!!</p>
             </div>
           </div>
         )}
